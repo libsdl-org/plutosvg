@@ -6,15 +6,10 @@ set(PLUTOSVG_VERSION_MICRO 4)
 
 project(plutosvg LANGUAGES C VERSION ${PLUTOSVG_VERSION_MAJOR}.${PLUTOSVG_VERSION_MINOR}.${PLUTOSVG_VERSION_MICRO})
 
-include(FetchContent)
-FetchContent_Declare(plutovg
-    GIT_REPOSITORY https://github.com/sammycage/plutovg.git
-    GIT_TAG main
-    GIT_SHALLOW ON
-    FIND_PACKAGE_ARGS 0.0.3
-)
-
-FetchContent_MakeAvailable(plutovg)
+# Modified by libsdl-org: don't use FetchContent
+if(NOT TARGET plutovg::plutovg)
+    find_package(plutovg REQUIRED)
+endif()
 
 set(plutosvg_sources source/plutosvg.c)
 set(plutosvg_headers source/plutosvg.h)
