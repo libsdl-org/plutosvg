@@ -49,11 +49,15 @@ endif()
 
 option(PLUTOSVG_ENABLE_FREETYPE "Enable Freetype integration" OFF)
 if(PLUTOSVG_ENABLE_FREETYPE)
-    find_package(Freetype 2.12 REQUIRED)
+    if(NOT TARGET Freetype::Freetype)  # libsdl-org: use Freetype::Freetype
+        find_package(Freetype 2.12 REQUIRED)
+    endif()
     target_compile_definitions(plutosvg PUBLIC PLUTOSVG_HAS_FREETYPE)
-    target_link_libraries(plutosvg PUBLIC Freetype::Freetype)
+    target_link_libraries(plutosvg PRIVATE Freetype::Freetype)
+    target_include_directories(plutosvg PUBLIC $<TARGET_PROPERTY:Freetype::Freetype,INTERFACE_INCLUDE_DIRECTORIES>)
 endif()
 
+if(0) # Disabled by libsdl-org because freetype is possible not in install set
 include(GNUInstallDirs)
 
 include(CMakePackageConfigHelpers)
@@ -140,6 +144,7 @@ file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/plutosvg.pc" "${plutosvg_pc}")
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/plutosvg.pc"
     DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig"
 )
+endif()
 
 option(PLUTOSVG_BUILD_EXAMPLES "Build examples" ON)
 if(PLUTOSVG_BUILD_EXAMPLES)
