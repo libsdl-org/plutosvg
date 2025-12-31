@@ -1252,6 +1252,18 @@ plutosvg_document_t* plutosvg_document_load_from_data(const char* data, int leng
 {
     if(length == -1)
         length = strlen(data);
+    if(length >= 3) {
+        const uint8_t* buffer = (const uint8_t*)(data);
+
+        const uint8_t c1 = buffer[0];
+        const uint8_t c2 = buffer[1];
+        const uint8_t c3 = buffer[2];
+        if(c1 == 0xEF && c2 == 0xBB && c3 == 0xBF) {
+            data += 3;
+            length -= 3;
+        }
+    }
+
     const char* it = data;
     const char* end = it + length;
 
