@@ -60,6 +60,7 @@ if(PLUTOSVG_ENABLE_FREETYPE)
     target_link_libraries(plutosvg PUBLIC Freetype::Freetype)
 endif()
 
+if(0) # Disabled by libsdl-org because freetype is possible not in install set
 configure_package_config_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/plutosvgConfig.cmake.in"
     "${CMAKE_CURRENT_BINARY_DIR}/plutosvgConfig.cmake"
@@ -143,6 +144,7 @@ file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/plutosvg.pc" "${plutosvg_pc}")
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/plutosvg.pc"
     DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig"
 )
+endif()
 
 option(PLUTOSVG_BUILD_EXAMPLES "Build examples" ON)
 if(PLUTOSVG_BUILD_EXAMPLES)
