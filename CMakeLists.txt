@@ -55,9 +55,12 @@ endif()
 
 option(PLUTOSVG_ENABLE_FREETYPE "Enable Freetype integration" OFF)
 if(PLUTOSVG_ENABLE_FREETYPE)
-    find_package(Freetype 2.12 REQUIRED)
+    if(NOT TARGET Freetype::Freetype)  # libsdl-org: use Freetype::Freetype
+        find_package(Freetype 2.12 REQUIRED)
+    endif()
     target_compile_definitions(plutosvg PUBLIC PLUTOSVG_HAS_FREETYPE)
-    target_link_libraries(plutosvg PUBLIC Freetype::Freetype)
+    target_link_libraries(plutosvg PRIVATE Freetype::Freetype)
+    target_include_directories(plutosvg PUBLIC $<TARGET_PROPERTY:Freetype::Freetype,INTERFACE_INCLUDE_DIRECTORIES>)
 endif()
 
 if(0) # Disabled by libsdl-org because freetype is possible not in install set
